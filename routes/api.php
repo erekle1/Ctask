@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\WalletAddressController;
+use App\Http\Controllers\API\WalletController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('wallets', [WalletController::class, 'store']);
+    Route::get('wallets', [WalletController::class, 'index']);
+    Route::get('wallets/{wallet}', [WalletController::class, 'show']);
+    Route::apiResource('wallets.addresses', WalletAddressController::class)->only(['store']);
+    Route::get('addresses', [WalletAddressController::class, 'index']);
+    Route::post('logout', [AuthController::class, 'logout']);
 });
