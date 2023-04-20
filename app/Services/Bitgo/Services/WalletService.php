@@ -32,7 +32,6 @@ class WalletService implements WalletInterface
 
             return Wallet::fromApiResponse($walletData);
         } catch (GuzzleException $e) {
-            dd($e->getMessage());
             // Handle the exception or throw a custom exception
             throw $e;
         }
